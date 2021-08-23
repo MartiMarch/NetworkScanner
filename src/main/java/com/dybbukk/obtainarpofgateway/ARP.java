@@ -159,19 +159,19 @@ public class ARP {
         {
             String ip = this.ip_1;
             String salida = "";
+            System.out.println("Escaneando la red, puede tardar unos minutos.");
             while(!this.ip_2.equals(ip))
             {
-                System.out.println("Escanenado la red - " + ip);
                 if(comparacion(ip_2, ip) < 0)
                 {
                     ip = incrementarIP(ip);
-                    salida = ejecucionCMD("ping " + ip + " -n 1 -w 1 -l 0.5");
+                    salida = ejecucionCMD("ping " + ip + " -n 1 -w 1 -l 0.1");
                     existenciaIP(salida, ip);
                 }
                 else if(comparacion(ip_2, ip) > 0)
                 {
                     ip = decrementarIP(ip);
-                    salida = ejecucionCMD("ping " + ip + " -n 1 -w 1 -l 0.5");
+                    salida = ejecucionCMD("ping " + ip + " -n 1 -w 1 -l 0.1");
                     existenciaIP(salida, ip);
                 }
             }
@@ -180,11 +180,13 @@ public class ARP {
         {
             
         }
+        System.out.println("------------------------------------------------------------------------");
         System.out.println("Imprimiendo la tabla ARP de la puerta de enlace: ");
         for(int i = 0; i < tablaARP.size(); ++i)
         {
-            System.out.println(tablaARP.get(i));
+            System.out.println("  " + tablaARP.get(i));
         }
+        System.out.println("------------------------------------------------------------------------");
     }
     
     public String ejecucionCMD(String comando)
@@ -330,14 +332,14 @@ public class ARP {
     
     public void existenciaIP(String salida, String ip)
     {
-        if(salida.contains("100%"))
+        if(salida.contains("recibidos = 1"))
         {
             this.tablaARP.add(ip);
         }
     }
     
     public static void main(String[] args) {
-        ARP arp = new ARP("192.168.0.0", "192.168.1.255");
+        ARP arp = new ARP("192.168.1.0", "192.168.1.100");
         arp.escanearRed();
     }
 }
