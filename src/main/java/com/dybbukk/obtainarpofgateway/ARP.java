@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
 public class ARP {
-    private String ip_1 = "192.168.0.0", ip_2 = "192.168.1.255";
+    private String ip_1 = "192.168.1.0", ip_2 = "192.168.1.255";
     private static final char PUNTO = '.';
     private ArrayList<String> tablaARP = new ArrayList();
     
@@ -165,15 +165,14 @@ public class ARP {
                 if(comparacion(ip_2, ip) < 0)
                 {
                     ip = incrementarIP(ip);
-                    salida = ejecucionCMD("ping " + ip + " -n 1 -w 1 -l 0.1");
-                    existenciaIP(salida, ip);
                 }
                 else if(comparacion(ip_2, ip) > 0)
                 {
                     ip = decrementarIP(ip);
-                    salida = ejecucionCMD("ping " + ip + " -n 1 -w 1 -l 0.1");
-                    existenciaIP(salida, ip);
                 }
+                //salida = ejecucionCMD("ping " + ip + " -n 1 -w 1 -l 0.5");
+                salida = ejecucionCMD("ping " + ip);
+                existenciaIP(salida, ip);
             }
         }
         else
@@ -332,7 +331,7 @@ public class ARP {
     
     public void existenciaIP(String salida, String ip)
     {
-        if(salida.contains("recibidos = 1"))
+        if(!salida.contains("(100%"))
         {
             this.tablaARP.add(ip);
         }
